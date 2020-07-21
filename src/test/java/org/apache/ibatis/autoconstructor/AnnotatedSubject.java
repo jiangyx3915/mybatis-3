@@ -32,6 +32,7 @@ public class AnnotatedSubject {
     this.weight = weight;
   }
 
+  // 表示mybatis查询数据之后使用该构造方法创建对象
   @AutomapConstructor
   public AnnotatedSubject(final int id, final String name, final int age, final Integer height, final Integer weight) {
     this.id = id;
