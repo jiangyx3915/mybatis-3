@@ -42,11 +42,21 @@ public class XMLMapperEntityResolver implements EntityResolver {
 
   /**
    * Converts a public DTD into a local one.
+   * 将在线DTD转换成本地的DTD
+   *
+   * <!DOCTYPE configuration
+   *         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+   *         "http://mybatis.org/dtd/mybatis-3-config.dtd">
+   *
+   * publicId 为 -//mybatis.org//DTD Config 3.0//EN
+   * systemId 为 http://mybatis.org/dtd/mybatis-3-config.dtd
    *
    * @param publicId
    *          The public id that is what comes after "PUBLIC"
+   *          间接指向资源
    * @param systemId
    *          The system id that is what comes after the public id.
+   *          systemId 表示直接指向的资源地址
    * @return The InputSource for the DTD
    *
    * @throws org.xml.sax.SAXException
@@ -58,8 +68,10 @@ public class XMLMapperEntityResolver implements EntityResolver {
       if (systemId != null) {
         String lowerCaseSystemId = systemId.toLowerCase(Locale.ENGLISH);
         if (lowerCaseSystemId.contains(MYBATIS_CONFIG_SYSTEM) || lowerCaseSystemId.contains(IBATIS_CONFIG_SYSTEM)) {
+          // 加载本地 mybatis-3-config.dtd
           return getInputSource(MYBATIS_CONFIG_DTD, publicId, systemId);
         } else if (lowerCaseSystemId.contains(MYBATIS_MAPPER_SYSTEM) || lowerCaseSystemId.contains(IBATIS_MAPPER_SYSTEM)) {
+          // 加载本地 mybatis-3-mapper.dtd
           return getInputSource(MYBATIS_MAPPER_DTD, publicId, systemId);
         }
       }
@@ -75,6 +87,7 @@ public class XMLMapperEntityResolver implements EntityResolver {
       try {
         InputStream in = Resources.getResourceAsStream(path);
         source = new InputSource(in);
+        // 设置publicId 和 systemId
         source.setPublicId(publicId);
         source.setSystemId(systemId);
       } catch (IOException e) {
