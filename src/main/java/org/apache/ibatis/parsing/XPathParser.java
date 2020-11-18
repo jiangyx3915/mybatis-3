@@ -294,7 +294,8 @@ public class XPathParser {
 
       // 使用 factory 创建 DocumentBuilder 对象
       DocumentBuilder builder = factory.newDocumentBuilder();
-      builder.setEntityResolver(entityResolver);  // 设置实体解析器
+      // 设置解析mybatis xml文档节点的解析器
+      builder.setEntityResolver(entityResolver);
       builder.setErrorHandler(new ErrorHandler() {
         @Override
         public void error(SAXParseException exception) throws SAXException {

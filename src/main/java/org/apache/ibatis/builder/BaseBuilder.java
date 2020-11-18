@@ -32,6 +32,9 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
  * @author Clinton Begin
  */
 public abstract class BaseBuilder {
+  /**
+   * 解析 mybatis-config.xml 的配置类
+   */
   protected final Configuration configuration;
   protected final TypeAliasRegistry typeAliasRegistry;
   protected final TypeHandlerRegistry typeHandlerRegistry;
@@ -46,10 +49,22 @@ public abstract class BaseBuilder {
     return configuration;
   }
 
+  /**
+   * 解析正则表达式
+   * @param regex         正则表达式
+   * @param defaultValue  默认正则表达式
+   * @return              表达式对象
+   */
   protected Pattern parseExpression(String regex, String defaultValue) {
     return Pattern.compile(regex == null ? defaultValue : regex);
   }
 
+  /**
+   * 将字符串转换成对应的xxx数据类型的值
+   * @param value           字符串
+   * @param defaultValue    默认值
+   * @return                对应的数据类型值
+   */
   protected Boolean booleanValueOf(String value, Boolean defaultValue) {
     return value == null ? defaultValue : Boolean.valueOf(value);
   }
@@ -63,6 +78,11 @@ public abstract class BaseBuilder {
     return new HashSet<>(Arrays.asList(value.split(",")));
   }
 
+  /**
+   * 解析对应的JdbcType类型
+   * @param alias
+   * @return
+   */
   protected JdbcType resolveJdbcType(String alias) {
     if (alias == null) {
       return null;
@@ -96,7 +116,13 @@ public abstract class BaseBuilder {
     }
   }
 
+  /**
+   * 创建指定对象
+   * @param alias
+   * @return        指定类对象
+   */
   protected Object createInstance(String alias) {
+    // 获取类
     Class<?> clazz = resolveClass(alias);
     if (clazz == null) {
       return null;
