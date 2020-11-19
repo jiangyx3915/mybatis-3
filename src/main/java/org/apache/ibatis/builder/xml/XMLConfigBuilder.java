@@ -138,14 +138,22 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 解析 settings 节点
+   * @param context
+   * @return
+   */
   private Properties settingsAsProperties(XNode context) {
     if (context == null) {
       return new Properties();
     }
+    // 解析 settings 子节点并转换为 Properties 对象
     Properties props = context.getChildrenAsProperties();
     // Check that all settings are known to the configuration class
+    // 创建 Configuration 类元数据对象
     MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
     for (Object key : props.keySet()) {
+      // 检测 Configuration 中是否存在相关属性，不存在则抛出异常
       if (!metaConfig.hasSetter(String.valueOf(key))) {
         throw new BuilderException("The setting " + key + " is not known.  Make sure you spelled it correctly (case sensitive).");
       }
@@ -234,6 +242,17 @@ public class XMLConfigBuilder extends BaseBuilder {
     }
   }
 
+  /**
+   * 解析 properties 节点
+   * 1、首先解析 <properties> 节点的子节点，并将解析结果设置到 Properties 对象中
+   * 2、从文件系统或者网络加载属性配置，这取决于 <properties> 节点的 url 或者 resource 属性是否为空
+   * 3、将加载属性的 Properties 对象设置到 XPathParser 和 Configuration 中
+   *
+   * 是先解析<properties>节点的子节点内容，然后再从文件系统或者网络读取属性配置，
+   * 因此在子节点中设置的属性配置会被覆盖
+   * @param context
+   * @throws Exception
+   */
   private void propertiesElement(XNode context) throws Exception {
     if (context != null) {
       // 解析 properties 子节点并转换为 Properties 对象
