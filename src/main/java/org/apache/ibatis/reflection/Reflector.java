@@ -42,6 +42,9 @@ import org.apache.ibatis.reflection.invoker.SetFieldInvoker;
 import org.apache.ibatis.reflection.property.PropertyNamer;
 
 /**
+ * 通过反射获取目标类的getter方法及其返回值类型，setter方法及其参数值类型等元信息
+ * 同时将元信息缓存到相应的集合中
+ *
  * This class represents a cached set of class definition information that
  * allows for easy mapping between property names and getter/setter methods.
  *
@@ -62,7 +65,9 @@ public class Reflector {
 
   public Reflector(Class<?> clazz) {
     type = clazz;
+    // 解析目标类的默认构造方法，并赋值给defaultConstructor
     addDefaultConstructor(clazz);
+    // 解析目标类的 getter 方法，解析并放入getMethods中
     addGetMethods(clazz);
     addSetMethods(clazz);
     addFields(clazz);

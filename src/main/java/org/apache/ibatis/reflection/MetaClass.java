@@ -36,6 +36,7 @@ public class MetaClass {
 
   private MetaClass(Class<?> type, ReflectorFactory reflectorFactory) {
     this.reflectorFactory = reflectorFactory;
+    // 根据类型创建 reflector
     this.reflector = reflectorFactory.findForClass(type);
   }
 
@@ -133,9 +134,12 @@ public class MetaClass {
   }
 
   public boolean hasSetter(String name) {
+    // 属性分词器，用于解析属性名
     PropertyTokenizer prop = new PropertyTokenizer(name);
+    // 如果hasNext返回true则表明name是一个复合属性
     if (prop.hasNext()) {
       if (reflector.hasSetter(prop.getName())) {
+        // 解析下一级属性
         MetaClass metaProp = metaClassForProperty(prop.getName());
         return metaProp.hasSetter(prop.getChildren());
       } else {

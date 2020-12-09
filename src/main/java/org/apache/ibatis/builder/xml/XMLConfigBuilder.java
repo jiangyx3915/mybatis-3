@@ -153,7 +153,7 @@ public class XMLConfigBuilder extends BaseBuilder {
     // 创建 Configuration 类元数据对象
     MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
     for (Object key : props.keySet()) {
-      // 检测 Configuration 中是否存在相关属性，不存在则抛出异常
+      // 检测 Configuration 中是否存在相关属性的setter方法，不存在则抛出异常
       if (!metaConfig.hasSetter(String.valueOf(key))) {
         throw new BuilderException("The setting " + key + " is not known.  Make sure you spelled it correctly (case sensitive).");
       }
