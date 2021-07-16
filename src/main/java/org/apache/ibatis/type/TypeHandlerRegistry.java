@@ -1,5 +1,5 @@
-/**
- *    Copyright 2009-2020 the original author or authors.
+/*
+ *    Copyright 2009-2021 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -279,7 +279,7 @@ public final class TypeHandlerRegistry {
         jdbcHandlerMap = getJdbcHandlerMapForEnumInterfaces(iface, enumClazz);
       }
       if (jdbcHandlerMap != null) {
-        // Found a type handler regsiterd to a super interface
+        // Found a type handler registered to a super interface
         HashMap<JdbcType, TypeHandler<?>> newMap = new HashMap<>();
         for (Entry<JdbcType, TypeHandler<?>> entry : jdbcHandlerMap.entrySet()) {
           // Create a type handler instance with enum type as a constructor arg
